@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Consultar accesos por línea</h2>
+<form method="post">
+    <div class="mb-3">
+        <label for="linea_id" class="form-label">Seleccione una línea:</label>
+        <select name="linea_id" id="linea_id" class="form-select" required>
+            <option value="">-- Elegir --</option>
+            {% for linea in lineas %}
+                <option value="{{ linea.id }}" {% if linea_seleccionada and linea_seleccionada.id == linea.id %}selected{% endif %}>{{ linea.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Consultar</button>
+</form>
+
+{% if accesos %}
+    <hr>
+    <h3 class="mt-4">Accesos de la línea: {{ linea_seleccionada.nombre }}</h3>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr><th>Estación</th><th>Acceso</th><th>Guardias asignados</th></tr>
+        </thead>
+        <tbody>
+            {% for item in accesos %}
+            <tr>
+                <td>{{ item.estacion }}</td>
+                <td>{{ item.acceso }}</td>
+                <td>{{ item.guardias | join(', ') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% elif linea_seleccionada %}
+    <p class="mt-3 text-muted">No hay accesos registrados para esta línea.</p>
+{% endif %}
+{% endblock %}

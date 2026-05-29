@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Listado de estaciones</h2>
+<a href="{{ url_for('agregar_estacion') }}" class="btn btn-success mb-3">Agregar estación</a>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>ID</th><th>Nombre</th><th>Capacidad máxima</th><th>Orden</th><th>Línea</th><th>Municipalidad</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for e in estaciones %}
+        <tr>
+            <td>{{ e.id }}</td>
+            <td>{{ e.nombre }}</td>
+            <td>{{ e.capacidad_maxima }}</td>
+            <td>{{ e.orden }}</td>
+            <td>{{ e.linea.nombre if e.linea else 'Sin línea' }}</td>
+            <td>{{ e.municipalidad.nombre if e.municipalidad else 'Sin municipalidad' }}</td>
+            <td>
+                <a href="{{ url_for('editar_estacion', estacion_id=e.id) }}" class="btn btn-sm btn-primary">Editar</a>
+                <a href="{{ url_for('eliminar_estacion', estacion_id=e.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar esta estación? Se eliminarán también sus accesos y distancias asociadas.')">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

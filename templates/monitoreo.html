@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 style="color: #2E3E9E;">Monitoreo en tiempo real</h2>
+<p>Aforo actual de estaciones (simulado, actualiza cada 5 segundos).</p>
+<div id="aforo-estaciones">
+    {% for estacion in estaciones %}
+    <div class="card mb-2 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title" style="color: #2E3E9E;">
+                {{ estacion.nombre }}
+                <span id="conexion-{{ estacion.id }}" class="ms-2"></span>
+            </h5>
+            <p>Capacidad máxima: {{ estacion.capacidad_maxima }} personas</p>
+            <p>Aforo actual: <span id="aforo-{{ estacion.id }}">0</span> personas</p>
+            <div id="alerta-{{ estacion.id }}"></div>
+            <button class="btn btn-sm btn-warning mt-2" onclick="notificarGuardias({{ estacion.id }}, '{{ estacion.nombre }}')">Notificar a guardias</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    function actualizarAforo() {
+        fetch('/api/aforo')
+            .then(response => response.json())
+            .then(data => {
+                for (let id in data) {
+                    let aforo = data[id];
+                    let span = document.getElementById(`aforo-${id}`);
+                    if (span) span.innerText = aforo;
+                    let alertaDiv = document.getElementById(`alerta-${id}`);
+                    if (alertaDiv) {
+                        let cardBody = span.closest('.card-body');
+                        let pTexto = cardBody.querySelector('p').innerText;
+                        let capacidadMax = parseInt(pTexto.split(':')[1].trim());
+                        let umbral = capacidadMax * 1.5;
+                        if (aforo >= umbral) {
+                            alertaDiv.innerHTML = '<span class="badge bg-danger">¡Sobrecapacidad! Enviar bus adicional</span>';
+                        } else {
+                            alertaDiv.innerHTML = '';
+                        }
+                    }
+                }
+            });
+    }
+
+    function actualizarConectividad() {
+        fetch('/api/conectividad')
+            .then(response => response.json())
+            .then(data => {
+                for (let id in data) {
+                    let online = data[id];
+                    let span = document.getElementById(`conexion-${id}`);
+                    if (span) {
+                        if (online) {
+                            span.innerHTML = '<i class="fas fa-wifi text-success"></i> <small class="text-success">Conectado</small>';
+                        } else {
+                            span.innerHTML = '<i class="fas fa-wifi-slash text-danger"></i> <small class="text-danger">Desconectado</small>';
+                        }
+                    }
+                }
+            });
+    }
+
+    function notificarGuardias(estacionId, estacionNombre) {
+        alert(` Notificación enviada a los guardias de la estación "${estacionNombre}".\nSe ha informado sobre la situación actual.`);
+    }
+
+    setInterval(actualizarAforo, 5000);
+    setInterval(actualizarConectividad, 10000);
+    actualizarAforo();
+    actualizarConectividad();
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Agregar parqueo</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.ubicacion.label }} {{ form.ubicacion(class="form-control") }}</div>
+    <div class="mb-3">{{ form.estacion_id.label }} {{ form.estacion_id(class="form-select") }}</div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

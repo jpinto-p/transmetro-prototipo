@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Historial de cambios de parqueo - Bus {{ bus.placa }}</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Fecha</th><th>Parqueo anterior</th><th>Parqueo nuevo</th><th>Realizado por</th></tr>
+    </thead>
+    <tbody>
+        {% for h in historial %}
+        <tr>
+            <td>{{ h.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>{{ h.parqueo_anterior.ubicacion if h.parqueo_anterior else 'Ninguno' }}</td>
+            <td>{{ h.parqueo_nuevo.ubicacion if h.parqueo_nuevo else 'Ninguno' }}</td>
+            <td>{{ h.usuario }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('listar_buses') }}" class="btn btn-secondary">Volver a buses</a>
+{% endblock %}

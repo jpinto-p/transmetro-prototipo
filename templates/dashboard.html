@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Dashboard de administración</h2>
+
+<!-- Tarjetas de totales con iconos -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white" style="background-color: #2E3E9E;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-road"></i> Líneas</h5>
+                <p class="display-6">{{ total_lineas }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white" style="background-color: #7ED321;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-map-marker-alt"></i> Estaciones</h5>
+                <p class="display-6">{{ total_estaciones }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white" style="background-color: #FBC02D;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-bus"></i> Buses</h5>
+                <p class="display-6">{{ total_buses }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white" style="background-color: #D32F2F;">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-user-graduate"></i> Pilotos</h5>
+                <p class="display-6">{{ total_pilotos }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Conectividad global -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-wifi"></i> Estado de conectividad de estaciones</h5>
+                <div id="conectividad-global" class="mt-2">
+                    <p>Cargando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gestión de datos -->
+<h3 style="color: #2E3E9E;"><i class="fas fa-database"></i> Gestión de datos</h3>
+<div class="row mb-4">
+    <div class="col-md-3 mb-2">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-road"></i> Líneas</h5>
+                <a href="{{ url_for('listar_lineas') }}" class="btn btn-outline-primary btn-sm">Ver líneas</a>
+                <a href="{{ url_for('agregar_linea') }}" class="btn btn-primary btn-sm">Agregar línea</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-2">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-map-marker-alt"></i> Estaciones</h5>
+                <a href="{{ url_for('listar_estaciones') }}" class="btn btn-outline-primary btn-sm">Ver estaciones</a>
+                <a href="{{ url_for('agregar_estacion') }}" class="btn btn-primary btn-sm">Agregar estación</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-2">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-bus"></i> Buses</h5>
+                <a href="{{ url_for('listar_buses') }}" class="btn btn-outline-primary btn-sm">Ver buses</a>
+                <a href="{{ url_for('agregar_bus') }}" class="btn btn-primary btn-sm">Agregar bus</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-2">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-user-graduate"></i> Pilotos</h5>
+                <a href="{{ url_for('listar_pilotos') }}" class="btn btn-outline-primary btn-sm">Ver pilotos</a>
+                <a href="{{ url_for('agregar_piloto') }}" class="btn btn-primary btn-sm">Agregar piloto</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-2">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-parking"></i> Parqueos</h5>
+                <a href="{{ url_for('listar_parqueos') }}" class="btn btn-outline-primary btn-sm">Ver parqueos</a>
+                <a href="{{ url_for('agregar_parqueo') }}" class="btn btn-primary btn-sm">Agregar parqueo</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-2">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title"><i class="fas fa-route"></i> Distancias</h5>
+                <a href="{{ url_for('listar_distancias') }}" class="btn btn-outline-primary btn-sm">Ver distancias</a>
+                <a href="{{ url_for('agregar_distancia') }}" class="btn btn-primary btn-sm">Agregar distancia</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Líneas registradas con botón de detalle -->
+<h3 style="color: #2E3E9E;"><i class="fas fa-chart-line"></i> Líneas registradas</h3>
+<div class="row mb-4">
+    {% if lineas %}
+        {% for linea in lineas %}
+        <div class="col-md-3 mb-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ linea.nombre }}</h5>
+                    <p class="card-text"><i class="fas fa-arrows-alt-h"></i> Distancia: {{ linea.distancia_total }} km</p>
+                    <p class="card-text"><i class="fas fa-map-marker-alt"></i> Estaciones: {{ linea.estaciones|length }}</p>
+                    <p class="card-text"><i class="fas fa-bus"></i> Buses: {{ linea.buses|length }}</p>
+                    <a href="{{ url_for('detalle_linea', linea_id=linea.id) }}" class="btn btn-sm btn-outline-primary">Ver detalle</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">No hay líneas registradas. Agrega una usando el botón "Agregar línea".</p>
+    {% endif %}
+</div>
+
+<!-- Gráfico de capacidades -->
+<h3 style="color: #2E3E9E;"><i class="fas fa-chart-bar"></i> Capacidad máxima por estación</h3>
+<canvas id="capacidadChart" width="400" height="200" style="max-width:100%; height:auto;"></canvas>
+
+<div class="mt-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title" style="color: #2E3E9E;"><i class="fas fa-tachometer-alt"></i> Monitoreo y mapa</h5>
+            <p class="card-text"><i class="fas fa-eye"></i> Accede al monitoreo en tiempo real o consulta el mapa de rutas.</p>
+            <a href="{{ url_for('monitoreo') }}" class="btn btn-primary"><i class="fas fa-chart-line"></i> Ir a Monitoreo</a>
+            <a href="{{ url_for('mapa') }}" class="btn btn-outline-primary"><i class="fas fa-map"></i> Ver mapa de rutas</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const nombres = {{ estaciones_nombres | tojson }};
+    const capacidades = {{ estaciones_capacidades | tojson }};
+    const ctx = document.getElementById('capacidadChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: nombres,
+            datasets: [{
+                label: 'Capacidad máxima (personas)',
+                data: capacidades,
+                backgroundColor: '#7ED321',
+                borderColor: '#2E3E9E',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true } },
+            responsive: true
+        }
+    });
+
+    function actualizarConectividadGlobal() {
+        fetch('/api/conectividad')
+            .then(response => response.json())
+            .then(data => {
+                let total = Object.keys(data).length;
+                let online = Object.values(data).filter(v => v === true).length;
+                let offline = total - online;
+                let html = `<p><i class="fas fa-wifi text-success"></i> Conectadas: ${online} &nbsp; <i class="fas fa-wifi-slash text-danger"></i> Desconectadas: ${offline}</p>`;
+                html += `<div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: ${(online/total)*100}%" aria-valuenow="${online}" aria-valuemin="0" aria-valuemax="${total}">${Math.round((online/total)*100)}%</div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: ${(offline/total)*100}%" aria-valuenow="${offline}" aria-valuemin="0" aria-valuemax="${total}">${Math.round((offline/total)*100)}%</div>
+                          </div>`;
+                document.getElementById('conectividad-global').innerHTML = html;
+            });
+    }
+    actualizarConectividadGlobal();
+    setInterval(actualizarConectividadGlobal, 10000);
+</script>
+{% endblock %}

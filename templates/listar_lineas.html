@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Listado de líneas</h2>
+<a href="{{ url_for('agregar_linea') }}" class="btn btn-success mb-3">Agregar línea</a>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>ID</th><th>Nombre</th><th>Distancia total (km)</th><th>Municipalidad</th><th>Estaciones (n)</th><th>Buses asignados</th><th>Cumple regla (n a 2n)</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for l in lineas %}
+        {% set n = l.estaciones|length %}
+        {% set buses_asignados = l.buses|length %}
+        <tr>
+            <td>{{ l.id }}</td>
+            <td>{{ l.nombre }}</td>
+            <td>{{ l.distancia_total }}</td>
+            <td>{{ l.municipalidad.nombre if l.municipalidad else '' }}</td>
+            <td>{{ n }}</td>
+            <td>{{ buses_asignados }}</td>
+            <td>
+                {% if n == 0 %}<span class="badge bg-secondary">Sin estaciones</span>
+                {% elif n <= buses_asignados <= n*2 %}<span class="badge bg-success"> Cumple</span>
+                {% else %}<span class="badge bg-danger">❌ No cumple (debe tener entre {{ n }} y {{ n*2 }} buses)</span>{% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('editar_linea', linea_id=l.id) }}" class="btn btn-sm btn-primary">Editar</a>
+                <a href="{{ url_for('eliminar_linea', linea_id=l.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar esta línea? Se eliminarán también sus estaciones, distancias y buses asociados.')">Eliminar</a>
+                <a href="{{ url_for('detalle_linea', linea_id=l.id) }}" class="btn btn-sm btn-info">Ver detalle</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}  

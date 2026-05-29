@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 style="color: #2E3E9E;">Monitoreo de buses en tiempo real</h2>
+<p>Ocupación actual de cada bus (simulado, actualiza cada 5 segundos).</p>
+<div id="monitoreo-buses">
+    {% for bus in buses %}
+    <div class="card mb-2 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title" style="color: #2E3E9E;">Bus {{ bus.placa }}</h5>
+            <p>Capacidad máxima: {{ bus.capacidad_max }} pasajeros</p>
+            <p>Capacidad actual: <span id="aforo-bus-{{ bus.id }}">0</span> pasajeros</p>
+            <div id="alerta-bus-{{ bus.id }}"></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    function actualizarAforoBuses() {
+        fetch('/api/aforo_buses')
+            .then(response => response.json())
+            .then(data => {
+                for (let busId in data) {
+                    let aforo = data[busId];
+                    let span = document.getElementById(`aforo-bus-${busId}`);
+                    if (span) span.innerText = aforo;
+                    let alertaDiv = document.getElementById(`alerta-bus-${busId}`);
+                    if (alertaDiv) {
+                        // Necesitamos la capacidad máxima para este bus. Podríamos pasarla en el JSON o tener un array en JS.
+                        // Como simplificación, usamos un atributo data en el span o la buscamos en el DOM.
+                        let cardBody = span.closest('.card-body');
+                        let pTexto = cardBody.querySelector('p').innerText;
+                        let capacidadMax = parseInt(pTexto.split(':')[1].trim());
+                        let porcentaje = (aforo / capacidadMax) * 100;
+                        if (porcentaje < 25) {
+                            alertaDiv.innerHTML = '<span class="badge bg-warning text-dark"> Baja ocupación. Esperar 5 minutos.</span>';
+                        } else {
+                            alertaDiv.innerHTML = '';
+                        }
+                    }
+                }
+            });
+    }
+    setInterval(actualizarAforoBuses, 5000);
+    actualizarAforoBuses();
+</script>
+{% endblock %}

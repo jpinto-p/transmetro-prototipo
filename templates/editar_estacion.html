@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar estación: {{ estacion.nombre }}</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.nombre.label }} {{ form.nombre(class="form-control") }}</div>
+    <div class="mb-3">{{ form.capacidad_maxima.label }} {{ form.capacidad_maxima(class="form-control") }}</div>
+    <div class="mb-3">{{ form.orden.label }} {{ form.orden(class="form-control") }}</div>
+    <div class="mb-3">{{ form.linea_id.label }} {{ form.linea_id(class="form-select") }}</div>
+    <div class="mb-3">{{ form.municipalidad_id.label }} {{ form.municipalidad_id(class="form-select") }}</div>
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('listar_estaciones') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

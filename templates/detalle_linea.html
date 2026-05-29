@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h2>Detalle de la línea: {{ linea.nombre }}</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Distancia total:</strong> {{ linea.distancia_total }} km</p>
+        <p><strong>Municipalidad:</strong> {{ linea.municipalidad.nombre if linea.municipalidad else 'No especificada' }}</p>
+        
+        <h4 class="mt-4">Estaciones (en orden)</h4>
+        {% if estaciones %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr><th>Orden</th><th>Nombre</th><th>Capacidad máxima</th></tr>
+                </thead>
+                <tbody>
+                    {% for estacion in estaciones %}
+                    <tr>
+                        <td>{{ estacion.orden }}</td>
+                        <td>{{ estacion.nombre }}</td>
+                        <td>{{ estacion.capacidad_maxima }} personas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-muted">Esta línea no tiene estaciones registradas.</p>
+        {% endif %}
+        
+        <h4 class="mt-4">Buses asignados</h4>
+        {% if buses %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr><th>Placa</th><th>Capacidad máxima</th><th>Capacidad actual</th><th>Estado</th><th>Piloto</th><th>Parqueo</th></tr>
+                </thead>
+                <tbody>
+                    {% for bus in buses %}
+                    <tr>
+                        <td>{{ bus.placa }}</td>
+                        <td>{{ bus.capacidad_max }}</td>
+                        <td>{{ bus.capacidad_actual }}</td>
+                        <td>{{ bus.estado }}</td>
+                        <td>{{ bus.piloto.nombre if bus.piloto else 'Sin piloto' }}</td>
+                        <td>{{ bus.parqueo.ubicacion if bus.parqueo else 'Sin parqueo' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-muted">Esta línea no tiene buses asignados.</p>
+        {% endif %}
+        
+        <!-- Regla n a 2n -->
+        <h4 class="mt-4">Verificación de regla (n a 2n)</h4>
+        {% set n = estaciones|length %}
+        {% set buses_asignados = buses|length %}
+        <p>Estaciones: {{ n }} | Buses asignados: {{ buses_asignados }}</p>
+        {% if n == 0 %}
+            <p class="text-warning"> No hay estaciones registradas.</p>
+        {% elif n <= buses_asignados <= n*2 %}
+            <p class="text-success"> La línea cumple con la regla (entre {{ n }} y {{ n*2 }} buses).</p>
+        {% else %}
+            <p class="text-danger"> La línea NO cumple la regla. Debe tener entre {{ n }} y {{ n*2 }} buses.</p>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Volver al dashboard</a>
+    </div>
+</div>
+{% endblock %}

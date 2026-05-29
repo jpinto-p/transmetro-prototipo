@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Cambiar parqueo del bus {{ bus.placa }}</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.parqueo_id.label }} {{ form.parqueo_id(class="form-select") }}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+<a href="{{ url_for('listar_buses') }}" class="btn btn-secondary mt-2">Cancelar</a>
+{% endblock %}

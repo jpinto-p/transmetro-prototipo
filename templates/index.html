@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Carrusel de imágenes (hero) -->
+<!-- Carrusel de imágenes (hero) -->
+<div id="carouselTransmetro" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselTransmetro" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselTransmetro" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselTransmetro" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://www.muniguate.com/movilidadurbana/wp-content/themes/munigt/img/Encabezado-1.webp" class="d-block w-100" alt="Estación Transmetro">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                <h2 class="text-white fw-bold">SISTEMA TRANSMETRO</h2>
+                <p class="text-white">Estaciones con control y monitoreo en tiempo real</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://www.muniguate.com/movilidadurbana/wp-content/themes/munigt/img/Encabezado-2.webp" class="d-block w-100" alt="Ciudad de Guatemala">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                <h2 class="text-white fw-bold">SISTEMA TRANSMETRO</h2>
+                <p class="text-white">Conectamos la ciudad con rutas integradas</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://www.muniguate.com/movilidadurbana/wp-content/themes/munigt/img/Encabezado-5.webp" class="d-block w-100" alt="Tecnología">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                <h2 class="text-white fw-bold">SISTEMA TRANSMETRO</h2>
+                <p class="text-white">Alertas y monitoreo para una mejor experiencia</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselTransmetro" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselTransmetro" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+
+<!-- Sección de bienvenida con logo -->
+<div class="bg-white p-5 rounded mb-4" style="border-left: 5px solid #7ED321;">
+    <div class="text-center mb-3">
+        <img src="{{ url_for('static', filename='imagenes/Logo_Transmetro_Guatemala.svg.png') }}" alt="Transmetro Guatemala" style="max-height: 80px;">
+    </div>
+    <h1 class="display-4 text-center" style="color: #2E3E9E;">Sistema de Control de Transmetro</h1>
+    <p class="lead text-center">Prototipo funcional para gestionar líneas, estaciones, buses y pilotos.</p>
+    <hr class="my-4">
+    <p class="text-center">Plataforma diseñada para optimizar la operación del Transmetro, mejorar la seguridad y facilitar la toma de decisiones en tiempo real.</p>
+    <div class="text-center">
+        {% if not current_user.is_authenticated %}
+            <a class="btn btn-primary btn-lg" href="{{ url_for('login') }}" role="button">Acceder al sistema</a>
+        {% else %}
+            <a class="btn btn-primary btn-lg" href="{{ url_for('dashboard') }}" role="button">Ir al panel de control</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Contexto y beneficios (se mantiene igual) -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h3 style="color: #2E3E9E;"> Contexto del proyecto</h3>
+        <p>Debido a los altos índices de delincuencia en el transporte público del área metropolitana, las municipalidades implementaron el Transmetro con estaciones fijas, paradas seguras y pilotos capacitados.</p>
+        <p>Este sistema de control centralizado permite monitorear líneas, estaciones, buses y pilotos, así como generar alertas automáticas por sobrecapacidad y optimizar el consumo de combustible.</p>
+    </div>
+    <div class="col-md-6">
+        <h3 style="color: #7ED321;">✅ Beneficios clave</h3>
+        <ul>
+            <li><span style="color: #2E3E9E;"> Seguridad:</span> Notificaciones en tiempo real a guardias y operadores.</li>
+            <li><span style="color: #7ED321;"> Ahorro económico:</span> Control de buses con baja ocupación (ahorro de 1,200 galones/mes).</li>
+            <li><span style="color: #2E3E9E;"> Monitoreo:</span> Dashboard centralizado con indicadores de capacidad.</li>
+            <li><span style="color: #7ED321;"> Optimización de rutas:</span> Cálculo de distancias y verificación de la regla "n a 2n".</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Tarjetas de estadísticas (se mantiene igual) -->
+<div class="row text-center mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title" style="color: #2E3E9E;"> Reducción de robos</h5>
+                <p class="display-6" style="color: #7ED321; font-weight: bold;">73%</p>
+                <small>en rutas con Transmetro</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title" style="color: #D32F2F;"> Incidentes de sobrecapacidad</h5>
+                <p class="display-6 text-danger">12/semana</p>
+                <small>detectados automáticamente</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title" style="color: #FBC02D;"> Ahorro de combustible</h5>
+                <p class="display-6 text-warning">1,200 gal/mes</p>
+                <small>por control de espera</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title" style="color: #2E3E9E;"> Tiempo de respuesta</h5>
+                <p class="display-6" style="color: #2E3E9E;">&lt;2 min</p>
+                <small>ante emergencias (desde >15 min)</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sección: Mapa interactivo (iframe) -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h3 style="color: #2E3E9E;">🗺️ Mapa de rutas del Transmetro</h3>
+        <div class="d-flex justify-content-center">
+            <div class="ratio ratio-16x9" style="max-width: 800px; width: 100%;">
+                <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1OHKGTQ0nKQ1PNmE30sQIxY_gMR_JTdQ" title="Mapa Transmetro" allowfullscreen></iframe>
+            </div>
+        </div>
+        <p class="mt-2 text-muted text-center">Consulta las rutas disponibles y estaciones.</p>
+    </div>
+</div>
+
+<!-- Sección: Vídeo informativo -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h3 style="color: #2E3E9E;">🎥 Conoce el Transmetro</h3>
+        <div class="d-flex justify-content-center">
+            <div class="ratio ratio-16x9" style="max-width: 800px; width: 100%;">
+                <iframe src="https://www.youtube-nocookie.com/embed/PyUPgMpQHwU?rel=0" title="Video Transmetro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sección: Tarjetas de líneas (dinámicas) -->
+<h3 style="color: #2E3E9E;"> Nuestras líneas</h3>
+<div class="row mb-4">
+    {% if lineas %}
+        {% for linea in lineas %}
+        <div class="col-md-3 mb-3">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ linea.nombre }}</h5>
+                    <p class="card-text">Distancia total: {{ linea.distancia_total }} km</p>
+                    <p class="card-text">Estaciones: {{ linea.estaciones|length }}</p>
+                    <a href="#" class="btn btn-sm btn-outline-primary">Ver detalle</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">No hay líneas registradas aún. Inicia sesión como administrador para agregar líneas.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

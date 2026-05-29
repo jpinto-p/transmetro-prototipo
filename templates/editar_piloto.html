@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar piloto: {{ piloto.nombre }}</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.nombre.label }} {{ form.nombre(class="form-control") }}</div>
+    <div class="mb-3">{{ form.direccion.label }} {{ form.direccion(class="form-control") }}</div>
+    <div class="mb-3">{{ form.telefono.label }} {{ form.telefono(class="form-control") }}</div>
+    <div class="mb-3">{{ form.historial_educativo.label }} {{ form.historial_educativo(class="form-control") }}</div>
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('listar_pilotos') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

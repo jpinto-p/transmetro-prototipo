@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Listado de distancias registradas</h2>
+<a href="{{ url_for('agregar_distancia') }}" class="btn btn-success mb-3">Agregar distancia</a>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>ID</th><th>Estación origen</th><th>Estación destino</th><th>Distancia (km)</th><th>Línea</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for d in distancias %}
+        <tr>
+            <td>{{ d.id }}</td>
+            <td>{{ d.estacion_origen.nombre }}</td>
+            <td>{{ d.estacion_destino.nombre }}</td>
+            <td>{{ d.distancia_km }}</td>
+            <td>{{ d.linea.nombre }}</td>
+            <td>
+                <a href="{{ url_for('eliminar_distancia', id=d.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar esta distancia?')">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

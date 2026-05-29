@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title" style="color: #2E3E9E;">Mapa interactivo del Transmetro</h2>
+        <p class="card-text">Consulta las rutas, estaciones y paradas del sistema Transmetro en el área metropolitana de Guatemala.</p>
+        <div class="ratio ratio-16x9">
+            <iframe src="https://www.google.com/maps/d/u/2/embed?mid=1OHKGTQ0nKQ1PNmE30sQIxY_gMR_JTdQ" title="Mapa Transmetro" allowfullscreen></iframe>
+        </div>
+        <p class="mt-3 text-muted">Fuente: Municipalidad de Guatemala. Puedes hacer zoom y desplazarte.</p>
+    </div>
+</div>
+{% endblock %}

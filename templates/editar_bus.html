@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar bus - Placa: {{ bus.placa }}</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.placa.label }} {{ form.placa(class="form-control") }}</div>
+    <div class="mb-3">{{ form.capacidad_max.label }} {{ form.capacidad_max(class="form-control") }}</div>
+    <div class="mb-3">{{ form.capacidad_actual.label }} {{ form.capacidad_actual(class="form-control") }}</div>
+    <div class="mb-3">{{ form.estado.label }} {{ form.estado(class="form-control") }}</div>
+    <div class="mb-3">{{ form.linea_id.label }} {{ form.linea_id(class="form-select") }}</div>
+    <div class="mb-3">{{ form.piloto_id.label }} {{ form.piloto_id(class="form-select") }}</div>
+    <div class="mb-3">{{ form.parqueo_id.label }} {{ form.parqueo_id(class="form-select") }}</div>
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('listar_buses') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

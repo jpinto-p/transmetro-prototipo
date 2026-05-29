@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Listado de buses</h2>
+<a href="{{ url_for('agregar_bus') }}" class="btn btn-success mb-3">Agregar bus</a>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>ID</th><th>Placa</th><th>Capacidad máxima</th><th>Capacidad actual</th><th>Estado</th><th>Línea</th><th>Piloto</th><th>Parqueo</th><th>Verificar</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for b in buses %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.placa }}</td>
+            <td>{{ b.capacidad_max }}</td>
+            <td>{{ b.capacidad_actual }}</td>
+            <td>{{ b.estado }}</td>
+            <td>{{ b.linea.nombre if b.linea else 'Sin línea' }}</td>
+            <td>{{ b.piloto.nombre if b.piloto else '' }}</td>
+            <td>{{ b.parqueo.ubicacion if b.parqueo else 'Sin parqueo' }}</td>
+            <td>
+                <a href="{{ url_for('verificar_ocupacion_bus', bus_id=b.id) }}" class="btn btn-sm btn-info">Verificar</a>
+            </td>
+            <td>
+                <a href="{{ url_for('editar_bus', bus_id=b.id) }}" class="btn btn-sm btn-primary">Editar</a>
+                <a href="{{ url_for('cambiar_parqueo', bus_id=b.id) }}" class="btn btn-sm btn-warning">Cambiar parqueo</a>
+                <a href="{{ url_for('historial_parqueos', bus_id=b.id) }}" class="btn btn-sm btn-info">Historial</a>
+                <a href="{{ url_for('eliminar_bus', bus_id=b.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este bus?')">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

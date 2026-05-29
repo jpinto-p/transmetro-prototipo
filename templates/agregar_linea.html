@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Agregar línea</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.nombre.label }} {{ form.nombre(class="form-control") }}</div>
+    <div class="mb-3">{{ form.distancia_total.label }} {{ form.distancia_total(class="form-control") }}</div>
+    <div class="mb-3">{{ form.municipalidad_id.label }} {{ form.municipalidad_id(class="form-select") }}</div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

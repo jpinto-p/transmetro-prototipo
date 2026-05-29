@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Agregar nueva distancia</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.estacion_origen_id.label }} {{ form.estacion_origen_id(class="form-select") }}</div>
+    <div class="mb-3">{{ form.estacion_destino_id.label }} {{ form.estacion_destino_id(class="form-select") }}</div>
+    <div class="mb-3">{{ form.distancia_km.label }} {{ form.distancia_km(class="form-control", step="0.1") }}</div>
+    <div class="mb-3">{{ form.linea_id.label }} {{ form.linea_id(class="form-select") }}</div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}
