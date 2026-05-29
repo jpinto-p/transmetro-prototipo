@@ -1,4 +1,4 @@
-import os  # <-- Agrega esta línea al inicio, junto a los otros imports
+import os
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,7 +20,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
-# Crear tablas y usuario admin al inicio (solo si no existen)
+
+# Crear tablas y usuario administrador (solo si no existen)
 with app.app_context():
     db.create_all()
     if not Admin.query.filter_by(username='admin').first():
@@ -36,40 +37,6 @@ login_manager.login_view = 'login'
 @login_manager.user_loader
 def load_user(user_id):
     return Admin.query.get(int(user_id))
-
-# ========== CREAR TABLAS Y DATOS POR DEFECTO ==========
-with app.app_context():
-    db.create_all()
-    if not Admin.query.filter_by(username='admin').first():
-        admin = Admin(username='admin', password=generate_password_hash('admin123'))
-        db.session.add(admin)
-    if not Municipalidad.query.first():
-        muni = Municipalidad(nombre="Municipalidad de Guatemala", direccion="Palacio Municipal")
-        db.session.add(muni)
-    if not Piloto.query.first():
-        piloto = Piloto(nombre="Juan Pérez", direccion="Zona 1", telefono="12345678", historial_educativo="Licencia tipo B")
-        db.session.add(piloto)
-    if not Acceso.query.first():
-        estacion_ejemplo = Estacion.query.first()
-        if estacion_ejemplo:
-            acceso1 = Acceso(nombre="Acceso Norte", estacion_id=estacion_ejemplo.id)
-            acceso2 = Acceso(nombre="Acceso Sur", estacion_id=estacion_ejemplo.id)
-            db.session.add(acceso1)
-            db.session.add(acceso2)
-            db.session.flush()
-            guardia1 = Guardia(nombre="Carlos López", turno="Matutino", acceso_id=acceso1.id)
-            guardia2 = Guardia(nombre="Ana Gómez", turno="Vespertino", acceso_id=acceso2.id)
-            db.session.add(guardia1)
-            db.session.add(guardia2)
-    # Crear algunos parqueos de ejemplo si no existen
-    if not Parqueo.query.first():
-        estacion_para_parqueo = Estacion.query.first()
-        if estacion_para_parqueo:
-            parqueo1 = Parqueo(ubicacion="Parqueo Norte", estacion_id=estacion_para_parqueo.id)
-            parqueo2 = Parqueo(ubicacion="Parqueo Sur", estacion_id=estacion_para_parqueo.id)
-            db.session.add(parqueo1)
-            db.session.add(parqueo2)
-    db.session.commit()
 
 # ========== RUTAS PRINCIPALES ==========
 @app.route('/')
@@ -340,9 +307,9 @@ def verificar_ocupacion_bus(bus_id):
     bus = Bus.query.get_or_404(bus_id)
     porcentaje = (bus.capacidad_actual / bus.capacidad_max) * 100 if bus.capacidad_max > 0 else 0
     if porcentaje < 25:
-        flash(f' El bus {bus.placa} tiene menos del 25% de capacidad ({porcentaje:.1f}%). Debe esperar 5 minutos en cada estación.', 'warning')
+        flash(f'⚠️ El bus {bus.placa} tiene menos del 25% de capacidad ({porcentaje:.1f}%). Debe esperar 5 minutos en cada estación.', 'warning')
     else:
-        flash(f' El bus {bus.placa} tiene {porcentaje:.1f}% de capacidad. Continúa normal.', 'success')
+        flash(f'✅ El bus {bus.placa} tiene {porcentaje:.1f}% de capacidad. Continúa normal.', 'success')
     return redirect(url_for('listar_buses'))
 
 # ========== CRUD PILOTOS ==========
@@ -399,7 +366,6 @@ def eliminar_piloto(piloto_id):
 @app.route('/parqueos')
 @login_required
 def listar_parqueos():
-    # Usar joinedload para precargar la relación bus y evitar consultas adicionales
     parqueos = Parqueo.query.options(joinedload(Parqueo.bus)).all()
     return render_template('listar_parqueos.html', parqueos=parqueos)
 
