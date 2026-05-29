@@ -11,10 +11,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'clave-secreta-para-prototipo'
 
 # Configuración de la base de datos
-if os.environ.get('AZURE_ENVIRONMENT'):
-    db_path = os.path.join(os.environ.get('HOME', '/home'), 'site', 'wwwroot', 'transmetro.db')
-else:
-    db_path = 'transmetro.db'
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+db_path = os.path.join(BASE_DIR, 'transmetro.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
