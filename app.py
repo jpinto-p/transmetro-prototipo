@@ -20,6 +20,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+# Crear tablas y usuario admin al inicio (solo si no existen)
+with app.app_context():
+    db.create_all()
+    if not Admin.query.filter_by(username='admin').first():
+        admin = Admin(username='admin', password=generate_password_hash('admin123'))
+        db.session.add(admin)
+        db.session.commit()
+        print("✅ Usuario administrador creado")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
