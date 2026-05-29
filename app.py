@@ -13,7 +13,7 @@ app.config['SECRET_KEY'] = 'clave-secreta-para-prototipo'
 # Configuración de la base de datos
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-db_path = os.path.join(BASE_DIR, 'transmetro.db')
+db_path = os.path.join(BASE_DIR, 'instance', 'transmetro.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
